@@ -1,11 +1,10 @@
 import puppeteer from 'puppeteer';
 
-export default async function handler(req, res) {
+export const handler = async (req, res) => {
   try {
     const browser = await puppeteer.launch({
-      headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      executablePath: puppeteer.executablePath() // 👈 this line fixes it!
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     const page = await browser.newPage();
@@ -18,4 +17,4 @@ export default async function handler(req, res) {
   } catch (error) {
     res.json({ success: false, error: error.message });
   }
-}
+};

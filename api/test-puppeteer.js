@@ -3,9 +3,15 @@ import puppeteer from 'puppeteer-core';
 
 export async function handler(req, res) {
   try {
+    const executablePath = await chromium.executablePath;
+
+    if (!executablePath) {
+      throw new Error("No Chrome executable found.");
+    }
+
     const browser = await puppeteer.launch({
       args: chromium.args,
-      executablePath: await chromium.executablePath,
+      executablePath,
       headless: chromium.headless,
     });
 

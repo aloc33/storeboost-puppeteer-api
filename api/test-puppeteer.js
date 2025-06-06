@@ -4,6 +4,7 @@ export const handler = async (req, res) => {
   try {
     const browser = await puppeteer.launch({
       headless: true,
+      executablePath: puppeteer.executablePath(), // 👈 this is the key
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 

@@ -1,17 +1,13 @@
 import chromium from 'chrome-aws-lambda';
-import puppeteer from 'puppeteer-core';
 
-export async function handler(req, res) {
+export default async function handler(req, res) {
+  let browser = null;
+
   try {
-    const executablePath = await chromium.executablePath;
-
-    if (!executablePath) {
-      throw new Error("No Chrome executable found.");
-    }
-
-    const browser = await puppeteer.launch({
+    browser = await chromium.puppeteer.launch({
       args: chromium.args,
-      executablePath,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath,
       headless: chromium.headless,
     });
 
@@ -19,10 +15,12 @@ export async function handler(req, res) {
     await page.goto('https://example.com');
     const title = await page.title();
 
-    await browser.close();
-
     res.json({ success: true, title });
   } catch (error) {
     res.json({ success: false, error: error.message });
+  } finally {
+    if (browser !== null) {
+      await browser.close();
+    }
   }
 }

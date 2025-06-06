@@ -5,7 +5,7 @@ export async function handler(req, res) {
     const browser = await puppeteer.launch({
       headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox']
-      // ✅ DO NOT SET executablePath
+      // ❌ DO NOT add executablePath
     });
 
     const page = await browser.newPage();

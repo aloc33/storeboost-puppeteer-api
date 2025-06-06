@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/test-puppeteer', async (req, res) => {
   try {
     const browser = await puppeteer.launch({
-      headless: 'new', // opt-in to modern headless
+      headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
     const page = await browser.newPage();

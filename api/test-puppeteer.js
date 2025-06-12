@@ -6,18 +6,18 @@ const router = express.Router();
 router.get('/test-puppeteer', async (req, res) => {
   try {
     const browser = await puppeteer.launch({
-      headless: "new", // or true
-      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+      headless: 'new',
+      args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 
     const page = await browser.newPage();
     await page.goto('https://example.com');
     const title = await page.title();
-
     await browser.close();
 
     res.json({ success: true, title });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ success: false, error: error.message });
   }
 });

@@ -1,15 +1,25 @@
 import express from 'express';
-import testRouter from './api/test-puppeteer.js';
+import puppeteer from 'puppeteer';
 
-const app = express();
-const PORT = process.env.PORT || 10000;
+const router = express.Router();
 
-app.use('/api', testRouter);
+router.get('/test-puppeteer', async (req, res) => {
+  try {
+    const browser = await puppeteer.launch({
+      headless: "new", // or true
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    });
 
-app.get('/', (req, res) => {
-  res.send('Storeboost Puppeteer API is live');
+    const page = await browser.newPage();
+    await page.goto('https://example.com');
+    const title = await page.title();
+
+    await browser.close();
+
+    res.json({ success: true, title });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+export default router;

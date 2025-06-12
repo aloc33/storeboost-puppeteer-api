@@ -8,6 +8,7 @@ router.get('/test-puppeteer', async (req, res) => {
     const browser = await puppeteer.launch({
       headless: 'new',
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: puppeteer.executablePath(), // 💥 THIS is the key line
     });
 
     const page = await browser.newPage();

@@ -1,9 +1,9 @@
-# Use a lightweight official Node.js image
 FROM node:20-slim
 
 # Install Chromium and dependencies
 RUN apt-get update && apt-get install -y \
   chromium \
+  ca-certificates \
   fonts-liberation \
   libappindicator3-1 \
   libasound2 \
@@ -19,23 +19,18 @@ RUN apt-get update && apt-get install -y \
   libxdamage1 \
   libxrandr2 \
   xdg-utils \
-  && rm -rf /var/lib/apt/lists/*
+  --no-install-recommends && \
+  apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
-WORKDIR /app
+# Create app directory
+WORKDIR /usr/src/app
 
-# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
-
-# Copy all remaining files
 COPY . .
 
-# Puppeteer looks for this env to find Chromium
+# Set Puppeteer to use installed Chromium
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
-# Expose your API port
 EXPOSE 10000
-
-# Start the app
-CMD ["npm", "start"]
+CMD [ "npm", "start" ]

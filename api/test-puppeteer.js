@@ -18,7 +18,7 @@ router.get('/test-puppeteer', async (req, res) => {
 
     res.json({ success: true, title });
   } catch (error) {
-    console.error(error);
+    console.error('Puppeteer error:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 });

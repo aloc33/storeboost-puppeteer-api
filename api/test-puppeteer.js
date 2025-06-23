@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/test-puppeteer', async (req, res) => {
   try {
     const browser = await puppeteer.launch({
-      headless: true,
+      headless: 'new',
       executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });

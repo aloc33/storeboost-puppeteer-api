@@ -2,7 +2,7 @@ FROM node:20-slim
 
 # Install Chromium and dependencies
 RUN apt-get update && apt-get install -y \
-  chromium-browser \
+  chromium \
   ca-certificates \
   fonts-liberation \
   libappindicator3-1 \
@@ -28,7 +28,8 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+# ✅ This is the correct path for `chromium` installed above
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 EXPOSE 10000
 CMD ["npm", "start"]

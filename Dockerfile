@@ -2,7 +2,7 @@ FROM node:20-slim
 
 # Install Chromium and dependencies
 RUN apt-get update && apt-get install -y \
-  chromium \
+  chromium-browser \
   ca-certificates \
   fonts-liberation \
   libappindicator3-1 \
@@ -22,15 +22,13 @@ RUN apt-get update && apt-get install -y \
   --no-install-recommends && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Create app directory
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 RUN npm install
 COPY . .
 
-# Set Puppeteer to use installed Chromium
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
 EXPOSE 10000
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]

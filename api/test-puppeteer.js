@@ -7,7 +7,7 @@ router.get('/test-puppeteer', async (req, res) => {
   try {
     const browser = await puppeteer.launch({
       headless: 'new',
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
 
@@ -18,7 +18,7 @@ router.get('/test-puppeteer', async (req, res) => {
 
     res.json({ success: true, title });
   } catch (error) {
-    console.error('Puppeteer error:', error);
+    console.error(error);
     res.status(500).json({ success: false, error: error.message });
   }
 });

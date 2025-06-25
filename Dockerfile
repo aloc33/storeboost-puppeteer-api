@@ -1,8 +1,9 @@
 FROM node:20-slim
 
-# Install Chromium and dependencies
+# Install Chromium and necessary dependencies
 RUN apt-get update && apt-get install -y \
   chromium \
+  ca-certificates \
   fonts-liberation \
   libappindicator3-1 \
   libasound2 \
@@ -21,15 +22,17 @@ RUN apt-get update && apt-get install -y \
   --no-install-recommends && \
   apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
+# Create app directory
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 RUN npm install
+
 COPY . .
 
-# Puppeteer should use system-installed Chromium
+# Set Puppeteer to use installed Chromium
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 EXPOSE 10000
-CMD ["npm", "start"]
+
+CMD [ "npm", "start" ]
